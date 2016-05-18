@@ -51,7 +51,7 @@ public class Core {
 	
 	public void aggiungiDottore(String nome,long temp){
 		dottori.put(idDottore, new Dottore(nome,idDottore,StatoDottore.PAUSA));		
-		listaEventi.add(new Evento(temp,TipoEvento.DOCTOR_INIZIA_TURNO,idDottore));
+		listaEventi.add(new Evento(temp,TipoEvento.DOTTORE_INIZIA_TURNO,idDottore));
 		idDottore++;	
 		
 	}
@@ -105,7 +105,17 @@ public class Core {
 				++pazientiPersi;
 				pazienti.get(e.getDato()).setStato(Paziente.StatoPaziente.NERO);
 				System.out.println("Paziente morto: " + e);				
-			}
+			}			
+			break;
+		case DOTTORE_INIZIA_TURNO:
+			mediciDisponibili++;
+			listaEventi.add(new Evento(e.getTempo()+480,TipoEvento.DOTTORE_FINE_TURNO,e.getDato()));
+			dottori.get(e.getDato()).setStato(StatoDottore.LIBERO);
+			break;
+		case DOTTORE_FINE_TURNO:
+			mediciDisponibili--;
+			listaEventi.add(new Evento(e.getTempo()+960,TipoEvento.DOTTORE_INIZIA_TURNO,e.getDato()));
+			dottori.get(e.getDato()).setStato(StatoDottore.PAUSA);
 			break;
 		default:
 			System.err.println("Panik!");
