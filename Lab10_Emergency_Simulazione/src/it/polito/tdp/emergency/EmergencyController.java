@@ -56,6 +56,7 @@ public class EmergencyController {
 
     @FXML
     void doSimulazione(ActionEvent event) {
+    	model.caricaEventi();
     	model.stub();
     }
 

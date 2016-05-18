@@ -1,16 +1,19 @@
 package it.polito.tdp.emergency.simulation;
 
 public class Dottore {
-	private String nome;
-	private int id;
-	public enum StatoDottore {LIBERO,OCCUPATO,PAUSA};
-	private StatoDottore stato;
+	protected String nome;
+	protected int id;
+	public enum StatoDottore {TURNO,PAUSA};
+	protected StatoDottore stato;
+	protected Paziente p;
+	//se p==null allora il dottore è libero e può ricevere un paziente
 	
 	public Dottore(String nome, int id, StatoDottore stato) {
 		super();
 		this.nome = nome;
 		this.id = id;
 		this.stato = stato;
+		p=null;
 	}
 
 	public StatoDottore getStato() {
@@ -27,6 +30,14 @@ public class Dottore {
 
 	public int getId() {
 		return id;
+	}	
+
+	public Paziente getP() {
+		return p;
+	}
+
+	public void setP(Paziente p) {
+		this.p = p;
 	}
 
 	@Override
@@ -50,6 +61,13 @@ public class Dottore {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "@"+nome+" ("+id+")";
+	}
+	
+	
 	
 	
 	

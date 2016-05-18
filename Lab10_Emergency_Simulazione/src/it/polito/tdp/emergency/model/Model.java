@@ -14,12 +14,28 @@ public class Model {
 		return simulatore;
 	}
 
-
-	public void stub() {		
-
-		simulatore.setMediciDisponibili(2);
+	
+	public void caricaEventi(){
+		simulatore.setMediciDisponibili(0);
 		FieldHospitalDAO dao=new FieldHospitalDAO();
 		dao.popola(simulatore);
+		//long tempo=Long.parseLong(turno.substring(0, 2))*60+Long.parseLong(turno.substring(2,4));
+		
+		simulatore.aggiungiDottore("@Doc 1", 0);
+		simulatore.aggiungiDottore("@Doc 2", 0*60);
+		simulatore.aggiungiDottore("@Doc 3", 2*60);
+		simulatore.aggiungiDottore("@Doc 4", 4*60);
+		simulatore.aggiungiDottore("@Doc 5", 6*60);
+		
+		simulatore.aggiungiAssistente("@Ass 1", 0);
+		simulatore.aggiungiAssistente("@Ass 2", 8*60);
+		simulatore.aggiungiAssistente("@Ass 3", 16*60);
+		
+	}
+	public void stub() {		
+
+		
+		
 		
 		/*
 		simulatore.aggiungiPaziente(new Paziente(1, Paziente.StatoPaziente.ROSSO));
