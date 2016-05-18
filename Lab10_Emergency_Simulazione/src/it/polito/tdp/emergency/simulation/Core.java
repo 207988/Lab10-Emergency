@@ -17,7 +17,21 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import it.polito.tdp.emergency.simulation.Dottore.StatoDottore;
+import it.polito.tdp.emergency.simulation.Evento.TipoEvento;
+
 public class Core {
+	
+	
+	Queue<Evento> listaEventi = new PriorityQueue<Evento>();
+	Map<Integer, Paziente> pazienti = new HashMap<Integer, Paziente>();	
+	Queue<Paziente> pazientiInAttesa = new PriorityQueue<Paziente>();
+	Map<Integer,Dottore>dottori=new HashMap<Integer,Dottore>();
+	int mediciDisponibili = 0;
+	int idDottore=1;
+	int pazientiSalvati = 0;
+	int pazientiPersi = 0;
+	
 	public int getPazientiSalvati() {
 		return pazientiSalvati;
 	}
@@ -25,14 +39,7 @@ public class Core {
 	public int getPazientiPersi() {
 		return pazientiPersi;
 	}
-
-	int pazientiSalvati = 0;
-	int pazientiPersi = 0;
-
-	Queue<Evento> listaEventi = new PriorityQueue<Evento>();
-	Map<Integer, Paziente> pazienti = new HashMap<Integer, Paziente>();
-	int mediciDisponibili = 0;
-	Queue<Paziente> pazientiInAttesa = new PriorityQueue<Paziente>();
+	
 
 	public int getMediciDisponibili() {
 		return mediciDisponibili;
@@ -41,6 +48,14 @@ public class Core {
 	public void setMediciDisponibili(int mediciDisponibili) {
 		this.mediciDisponibili = mediciDisponibili;
 	}
+	
+	public void aggiungiDottore(String nome,long temp){
+		dottori.put(idDottore, new Dottore(nome,idDottore,StatoDottore.PAUSA));		
+		listaEventi.add(new Evento(temp,TipoEvento.DOCTOR_INIZIA_TURNO,idDottore));
+		idDottore++;	
+		
+	}
+	
 
 	public void aggiungiEvento(Evento e) {
 		listaEventi.add(e);
@@ -84,12 +99,12 @@ public class Core {
 			if (pazienti.get(e.getDato()).getStato() == Paziente.StatoPaziente.SALVO) {
 				System.out.println("Paziente gi� salvato: " + e);
 			} else {
-				++pazientiPersi;
-				pazienti.get(e.getDato()).setStato(Paziente.StatoPaziente.NERO);
-				System.out.println("Paziente morto: " + e);
 				if (pazienti.get(e.getDato()).getStato() == Paziente.StatoPaziente.IN_CURA) {
 					++mediciDisponibili;
 				}
+				++pazientiPersi;
+				pazienti.get(e.getDato()).setStato(Paziente.StatoPaziente.NERO);
+				System.out.println("Paziente morto: " + e);				
 			}
 			break;
 		default:
