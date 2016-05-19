@@ -30,8 +30,7 @@ public class Core {
 	Map<Integer, Paziente> pazienti = new HashMap<Integer, Paziente>();	
 	Queue<Paziente> pazientiInAttesa = new PriorityQueue<Paziente>();
 	Map<Integer,Dottore>dottori=new HashMap<Integer,Dottore>();
-	Map<Integer,Assistente>assistenti=new TreeMap<Integer,Assistente>();	
-	//Map<Integer,Dottore>dottoriPausa=new HashMap<Integer,Dottore>();
+	Map<Integer,Assistente>assistenti=new TreeMap<Integer,Assistente>();
 	int mediciDisponibili = 0;
 	int idDottore=1;
 	int idAssistente=-1;
@@ -83,7 +82,7 @@ public class Core {
 		
 		switch (e.getTipo()) {
 			case PAZIENTE_ARRIVA:
-			//System.out.println("Arrivo paziente:" + e);
+			System.out.println("Arrivo paziente:" + e);
 			pazientiInAttesa.add(pazienti.get(e.getDato()));
 			switch (pazienti.get(e.getDato()).getStato()) {
 			case BIANCO:
@@ -122,7 +121,7 @@ public class Core {
 				}
 				++pazientiPersi;
 				pazienti.get(e.getDato()).setStato(Paziente.StatoPaziente.NERO);
-				//System.out.println("Paziente morto: " + e);	
+				System.out.println("Paziente morto: " + e);	
 				
 			}			
 			break;
@@ -136,7 +135,7 @@ public class Core {
 				
 				d.setP(null);
 				d.setStato(StatoDottore.TURNO);
-				//System.out.println("#############"+d.toString().toUpperCase()+" INIZIA TURNO"+"#############"+e.getTempo());
+				System.out.println("#############"+d.toString().toUpperCase()+" INIZIA TURNO"+"#############"+e.getTempo());
 			}
 			//caso assistente
 			else{
@@ -149,15 +148,7 @@ public class Core {
 					if(!a.equals(a1))
 						a1.setStato(StatoDottore.PAUSA);
 				}
-			}
-			
-			/*Dottore d=dottoriPausa.get(e.getDato());
-			d.setP(null);
-			d.setStato(StatoDottore.TURNO);
-			dottoriPausa.remove(d.getId());
-			dottori.put(d.getId(), d);*/
-			//dottoriPausa.get(e.getDato()).setStato(StatoDottore.TURNO);
-			//dottori.get(e.getDato()).setP(null);
+			}		
 			break;
 		case DOTTORE_FINE_TURNO:
 			Dottore d1=dottori.get(e.getDato());
@@ -167,7 +158,7 @@ public class Core {
 				listaEventi.add(new Evento(e.getTempo()+960,TipoEvento.DOTTORE_INIZIA_TURNO,e.getDato()));			
 				d1.setP(null);
 				d1.setStato(StatoDottore.PAUSA);
-				//System.out.println("#############"+d1.toString().toUpperCase()+" FINE TURNO"+"#############"+e.getTempo());
+				System.out.println("#############"+d1.toString().toUpperCase()+" FINE TURNO"+"#############"+e.getTempo());
 			}
 			//caso assistente
 			else{
@@ -177,16 +168,7 @@ public class Core {
 				a.setStato(StatoDottore.PAUSA);
 				System.out.println("#############"+a.toString().toUpperCase()+" FINE TURNO"+"#############"+e.getTempo());
 				
-			}
-			
-			
-			/*Dottore d1=dottori.get(e.getDato());
-			d1.setP(null);
-			d1.setStato(StatoDottore.PAUSA);
-			dottori.remove(d1.getId());
-			dottoriPausa.put(d1.getId(), d1);*/
-			//dottori.get(e.getDato()).setStato(StatoDottore.PAUSA);
-			//dottori.get(e.getDato()).setP(null);
+			}		
 			break;
 		default:
 			System.err.println("Panik!");
@@ -212,7 +194,7 @@ public class Core {
 						if(a.getP()==null){
 						a.setP(p);
 						aggiungiEvento(new Evento(adesso + 30, Evento.TipoEvento.PAZIENTE_GUARISCE, p.getId()));
-						//System.out.println(a + " inizia a curare: " + p);
+						System.out.println(a + " inizia a curare: " + p);
 						return true;
 					}
 				}
@@ -226,7 +208,7 @@ public class Core {
 						d.setP(p);
 						pazienti.get(p.getId()).setStato(Paziente.StatoPaziente.IN_CURA);
 						aggiungiEvento(new Evento(adesso + 30, Evento.TipoEvento.PAZIENTE_GUARISCE, p.getId()));
-						//System.out.println(d+" inizia a curare: " + p);
+						System.out.println(d+" inizia a curare: " + p);
 						return true;
 					}
 			}
